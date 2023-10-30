@@ -1,0 +1,33 @@
+export type Gameweek = {
+    week: number,
+    minutes: number,
+    goals: number,
+    assists: number,
+    clean_sheets: number,
+    goals_conceded: number,
+    own_goals: number,
+    penalties_saved: number,
+    penalties_missed: number,
+    yellow_cards: number,
+    red_cards: number,
+    saves: number,
+    expected_goals: number,
+    expected_assists: number,
+    expected_goal_involvements: number,
+    expected_goals_conceded: number,
+}
+
+export type ExpectedGameweek = {
+    week: number,
+    minutes: number,
+    goals: number,
+    assists: number,
+    clean_sheets: number,
+    goals_conceded: number,
+    own_goals: number,
+    penalties_saved: number,
+    penalties_missed: number,
+    yellow_cards: number,
+    red_cards: number,
+    saves: number,
+}
