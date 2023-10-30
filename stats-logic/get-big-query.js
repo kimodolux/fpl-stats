@@ -1,6 +1,6 @@
 import {BigQuery} from "@google-cloud/bigquery";
 
-const keyFilename = './gcs-key/credentials.json';
+const keyFilename = './gcs-creds/credentials.json';
 const bigquery = new BigQuery({keyFilename});
   // [END bigquery_client_default_credentials]
   async function query() {

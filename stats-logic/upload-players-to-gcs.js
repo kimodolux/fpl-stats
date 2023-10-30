@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import fs from "fs";
 
 // Replace with your Google Cloud Storage credentials file path
-const keyFilename = './gcs-key/credentials.json';
+const keyFilename = './gcs-creds/credentials.json';
 
 // Replace with your Google Cloud Storage bucket name
 const bucketName = 'fpl-sts-bucket-1';
