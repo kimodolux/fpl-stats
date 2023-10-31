@@ -6,7 +6,6 @@ const bigquery = new BigQuery({keyFilename});
 
   async function query() {
 
-    
     const query = `SELECT *
       FROM \`fpl-stats-6e68c.fpl_stats_2_asia_se1.points_table\`
       LIMIT 20`;

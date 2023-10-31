@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const keyFilename = './gcs-creds/credentials.json';
 const bigquery = new BigQuery({keyFilename});
 
-  async function query(team_id: number) {
+  async function query(team_id: string) {
 
     const query_points = `SELECT *
       FROM \`fpl-stats-6e68c.fpl_stats_2_asia_se1.points_table\`
@@ -41,7 +41,11 @@ const bigquery = new BigQuery({keyFilename});
 export async function GET(
   req: Request,
 ) {
-  let data = await query(req);
+  const search = new URL(req.url).search;
+  const urlParams = new URLSearchParams(search);
+  let team_id = urlParams.get("team_id");
+  if(!team_id) return NextResponse.error()
+  let data = await query(team_id);
   return NextResponse.json({ data } )
 }
 
