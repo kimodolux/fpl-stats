@@ -1,4 +1,4 @@
-import { ExpectedGameweek, Gameweek } from "./Gameweek";
+// import { ExpectedGameweek, Gameweek } from "./Gameweek";
 
 enum Position {
     FORWARD="forward",
@@ -12,12 +12,14 @@ export type Player = {
     first_name: string,
     last_name: string,
     position: Position,
-    team_id: number,
+    team: number,
+    team_name: string | undefined,
     total_points: number;
     minutes: number;
-    goals: number;
+    goals_scored: number;
     assists: number;
-    cost: number;
-    gameweek_stats: [Gameweek];
-    expected_gameweek_stats: [ExpectedGameweek];
+    now_cost: number;
 }
+
+    // gameweek_stats: [Gameweek];
+    // expected_gameweek_stats: [ExpectedGameweek];

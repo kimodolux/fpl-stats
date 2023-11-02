@@ -36,20 +36,20 @@ async function uploadPlayers() {
     let bootstrap_data = await bootstrap_res.json()
     const players_array = bootstrap_data.elements
 
-  //   let players_ndJson = players_array.map(JSON.stringify).join('\n');
-  //   fs.writeFile("players.json", players_ndJson, function(err) {
-  //     if (err) {
-  //         console.log(err);
-  //     }
-  //     else{
-  //       console.log("File written successfully\n");
-  //     }
-  //   });
+    let players_ndJson = players_array.map(JSON.stringify).join('\n');
+    fs.writeFile("players.json", players_ndJson, function(err) {
+      if (err) {
+          console.log(err);
+      }
+      else{
+        console.log("File written successfully\n");
+      }
+    });
 
-  // // Upload the file to the specified bucket
-  // await storage.bucket(bucketName).upload("players.json", {
-  //   destination: "players.json",
-  // });
+  // Upload the file to the specified bucket
+  await storage.bucket(bucketName).upload("players.json", {
+    destination: "players.json",
+  });
 
   console.log(`File 'players.json' uploaded successfully.`);
 
