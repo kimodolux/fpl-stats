@@ -11,7 +11,9 @@ export type Team = {
     strength_attack_away: number,
     strength_defence_home: number,
     strength_defence_away: number,
-    wins: number,
-    losses: number,
-    draws: number
+    position: number,
+    win: number,
+    loss: number,
+    draw: number,
+    points: number
 }

@@ -10,7 +10,8 @@ enum Position {
 export type Player = {
     id: number,
     first_name: string,
-    last_name: string,
+    second_name: string,
+    web_name: string,
     position: Position,
     team: number,
     team_name: string | undefined,

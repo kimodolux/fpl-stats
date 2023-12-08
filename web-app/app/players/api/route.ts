@@ -31,6 +31,11 @@ export async function GET(
   req: Request,
 ) {
   let data = await query();
-  return NextResponse.json({ data } )
+  try{
+    return NextResponse.json({ data } )
+  }
+  finally{
+    console.log(data)
+  }
 }
 

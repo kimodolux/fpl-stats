@@ -1,8 +1,7 @@
 "use client"
 
-import { useEffect, useState } from 'react';
-import {Box} from '../lib/mui';
-import {DataGrid, GridColDef, GridValueGetterParams} from "../lib/mui-data-grid"
+import {Box} from '../../app/lib/mui-material';
+import {DataGrid, GridColDef, GridValueGetterParams} from "../../app/lib/mui-data-grid"
 import Link from 'next/link'
 import { TeamStanding } from '../../types/TeamStanding';
 
@@ -12,7 +11,7 @@ const columns: GridColDef[] = [
       headerName: 'Team name',
       width: 150,
       renderCell: (params) => (
-        <Link href={`/team/${params.id}`}>{params.value}</Link>
+        <Link href={`/teams/${params.id}`}>{params.value}</Link>
       )
     },
     {
@@ -65,17 +64,9 @@ const columns: GridColDef[] = [
     }
   ];
 
-export default function Page() {
-  const [data, setData] = useState<TeamStanding[] | null>(null)
-
-  useEffect(() => {
-    fetch('/table/api').then((res) => res.json())
-    .then((returned_data) => {
-      setData(returned_data.data[0])
-    })
-  }, [])
-    
-  if(!data){
+export default function StandingsTable(props: {points_data: TeamStanding[] | null}) {
+    let {points_data} = props
+  if(!points_data){
     return (
       <Box>
         <p>Loading...</p>      
@@ -86,7 +77,7 @@ export default function Page() {
     return (
         <Box>
             <DataGrid
-            rows={data}
+            rows={points_data}
             getRowId={row => row.team_id}
             columns={columns}
             initialState={{

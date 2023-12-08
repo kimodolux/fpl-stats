@@ -1,19 +1,17 @@
 "use client"
 
-import { useEffect, useState } from 'react';
-import {Box} from '../lib/mui';
-import {DataGrid, GridColDef, GridValueGetterParams} from "../lib/mui-data-grid"
+import {Box} from '../../app/lib/mui-material';
+import {DataGrid, GridColDef, GridValueGetterParams} from "../../app/lib/mui-data-grid"
 import Link from 'next/link'
 import { Player } from '../../types/Player';
-import { getTeamById } from '@/utils/team';
 
 const columns: GridColDef[] = [
     {
-      field: 'second_name',
+      field: 'web_name',
       headerName: 'Name',
       width: 150,
       renderCell: (params) => (
-        <Link href={`/player/${params.id}`}>{params.value}</Link>
+        <Link href={`/players/${params.id}`}>{params.value}</Link>
       )
     },
     {
@@ -57,22 +55,10 @@ const columns: GridColDef[] = [
 
   // TODO: add server side pagination
 
-export default function Page() {
-  const [data, setData] = useState<Player[] | null>(null)
-
-  useEffect(() => {
-    fetch('/player/api').then((res) => res.json())
-    .then((returned_data) => {
-      let player_data = returned_data.data[0]
-      player_data.forEach((player: Player) => {
-        player.team_name = getTeamById(player.team)
-        player.now_cost =player.now_cost / 10
-      })
-      setData(player_data)
-    })
-  }, [])
+export default function PlayerTable(props: {player_data: Player[] | null}) {
+    let {player_data} = props
     
-  if(!data){
+  if(!player_data){
     return (
       <Box>
         <p>Loading...</p>      
@@ -83,7 +69,7 @@ export default function Page() {
     return (
         <Box>
             <DataGrid
-            rows={data}
+            rows={player_data}
             getRowId={row => row.id}
             columns={columns}
             initialState={{

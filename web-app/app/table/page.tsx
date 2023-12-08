@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import {Box} from '../lib/mui';
+import {Box} from '../lib/mui-material';
 import {DataGrid, GridColDef, GridValueGetterParams} from "../lib/mui-data-grid"
 import Link from 'next/link'
 
@@ -11,7 +11,7 @@ const columns: GridColDef[] = [
       headerName: 'Team name',
       width: 150,
       renderCell: (params) => (
-        <Link href={`/team/${params.value}`}>{params.value}</Link>
+        <Link href={`/teams/${params.value}`}>{params.value}</Link>
       )
     },
     {

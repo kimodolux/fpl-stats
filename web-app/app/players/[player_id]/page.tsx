@@ -1,3 +1,5 @@
+import {Box} from '../../lib/mui-material';
+
 async function getData(playerId: string) {
     let url = `https://fantasy.premierleague.com/api/element-summary/${playerId}/`
     const options = {
@@ -11,7 +13,6 @@ async function getData(playerId: string) {
       throw new Error('Failed to fetch data')
     }
     let data = await response.json()
-    let keys = Object.keys(data)
     return data
   }
   
@@ -22,13 +23,18 @@ async function getData(playerId: string) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-between">
         <div>
-          <h3>Stats</h3>
-            <p>Total points</p>
-            <p>Games played</p>
-            <p>Minutes</p>
-            <p>Goals</p>
-            <p>xG</p>
-            <p>xA</p>
+          <Box sx={{ display: 'flex', flexDirection: 'row', marginLeft: "4em" }}>
+              <Box sx={{ p: 1,m: 1, bgcolor: '#808080', borderRadius: 1,}}>
+                <p>Price</p>
+                <h4>$5.4</h4>
+                <p>50 out of 100</p>
+              </Box>
+              <Box sx={{ p: 1,m: 1, bgcolor: '#808080', borderRadius: 1,}}>Points per Match</Box>
+              <Box sx={{ p: 1,m: 1, bgcolor: '#808080', borderRadius: 1,}}>Form</Box>
+              <Box sx={{ p: 1,m: 1, bgcolor: '#808080', borderRadius: 1,}}>Last gameweek points</Box>
+              <Box sx={{ p: 1,m: 1, bgcolor: '#808080', borderRadius: 1,}}>Total Pts</Box>
+              <Box sx={{ p: 1,m: 1, bgcolor: '#808080', borderRadius: 1,}}>Total Bonus</Box>
+          </Box>
           <h3>Fixtures</h3>
           {data.fixtures.map((fixture: any, index: number) => {
             if(index <= 1){
