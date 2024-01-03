@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import {Box} from '../../lib/mui-material';
-import {getTeamById} from "../../../utils/team"
+import {getTeamById} from "../../../utils/lookup"
 import { useEffect, useState } from 'react';
 import { Player } from '../../../types/Player';
 import { Team } from '../../../types/Team';
@@ -32,18 +32,22 @@ import PlayerTable from '@/components/tables/PlayerTable';
           </Box>
         )
     }
-
+    console.log(team_data)
     return (
       <main className="flex min-h-screen flex-col items-center justify-between">
         <div>
-        <h2>Team</h2>
+        <h2>{team_data.name}</h2>
           <h3>Team Stats</h3>
             <h4>Position: {team_data.position}</h4>
             <h4>Points : {team_data.points}</h4>
             <h4>Goals : {team_data.goals}</h4>
             <h4>Asissts : {team_data.assists}</h4>
-            <h4>Goals : {team_data.goals}</h4>
-            <h4>Goals : {team_data.goals}</h4>
+            <h4>xG : {team_data.goals}</h4>
+            <h4>xA : {team_data.goals}</h4>
+            <h4>xGC : {team_data.goals}</h4>
+            <h3>Fixtures</h3>
+            
+            <h3>Results</h3>
 
           <h3>Players</h3>
           <PlayerTable player_data={player_data}/>

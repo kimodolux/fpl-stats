@@ -8,6 +8,8 @@ const bigquery = new BigQuery({keyFilename});
 
     const query = `SELECT *
       FROM \`fpl-stats-6e68c.fpl_stats_2_asia_se1.players-1\`
+      ORDER BY form DESC
+      LIMIT 20
     `;
 
     // For all options, see https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query

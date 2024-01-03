@@ -37,7 +37,7 @@ async function uploadPlayers() {
     const players_array = bootstrap_data.elements
 
     let players_ndJson = players_array.map(JSON.stringify).join('\n');
-    fs.writeFile("players.json", players_ndJson, function(err) {
+    fs.writeFile("temp/players.json", players_ndJson, function(err) {
       if (err) {
           console.log(err);
       }
@@ -47,7 +47,7 @@ async function uploadPlayers() {
     });
 
   // Upload the file to the specified bucket
-  await storage.bucket(bucketName).upload("players.json", {
+  await storage.bucket(bucketName).upload("temp/players.json", {
     destination: "players.json",
   });
 

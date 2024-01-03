@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import {Box} from '../lib/mui-material';
 import { Player } from '../../types/Player';
-import { getTeamById } from '@/utils/team';
+import { getTeamById } from '@/utils/lookup';
 import PlayerTable from '@/components/tables/PlayerTable';
 
   // TODO: add server side pagination

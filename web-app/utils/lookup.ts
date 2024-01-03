@@ -1,3 +1,17 @@
+export const getPositionByType = (element_type: number) => {
+    switch(element_type){
+        case 1:
+            return "Goalkeeper"
+        case 2:
+            return "Defender"
+        case 3:
+            return "Midfielder"
+        case 4:
+            return "Forward"
+
+    }
+}
+
 export const getTeamById = (team_id: number) => {
     switch(team_id){
         case 1:
