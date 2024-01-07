@@ -37,7 +37,7 @@ export async function GET(
     return NextResponse.json({ data } )
   }
   finally{
-    console.log(data)
+    // console.log(data)
   }
 }
 

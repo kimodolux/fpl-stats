@@ -6,24 +6,28 @@ import { Player } from '../../types/Player';
 import { getTeamById } from '@/utils/lookup';
 import PlayerTable from '@/components/tables/PlayerTable';
 
-  // TODO: add server side pagination
+import {
+  useSelector,
+  selectPlayers,
+  selectPlayersLoadStatus
+} from '@/lib/redux'
 
+  // TODO: add server side pagination
+  
 export default function Page() {
   const [data, setData] = useState<Player[] | null>(null)
 
+  const players_data = useSelector(selectPlayers)
+  const players_load_status = useSelector(selectPlayersLoadStatus)
+
   useEffect(() => {
-    fetch('/players/api').then((res) => res.json())
-    .then((returned_data) => {
-      let player_data = returned_data.data[0]
-      player_data.forEach((player: Player) => {
-        player.team_name = getTeamById(player.team)
-        player.now_cost = player.now_cost / 10
+      let player_data = [...players_data].map((player: Player) => {
+       return {...player, team_name: getTeamById(player.team), now_cost: player.now_cost / 10}
       })
       setData(player_data)
-    })
-  }, [])
+  }, [players_data])
     
-  if(!data){
+  if(players_load_status == "loading"){
     return (
       <Box>
         <p>Loading...</p>      

@@ -3,7 +3,12 @@
 import {Box} from '../../app/lib/mui-material';
 import {DataGrid, GridColDef, GridValueGetterParams} from "../../app/lib/mui-data-grid"
 import Link from 'next/link'
-import { TeamStanding } from '../../types/TeamStanding';
+
+import {
+  useSelector,
+  selectTable,
+  selectTableLoadStatus
+} from '@/lib/redux'
 
 const columns: GridColDef[] = [
     {
@@ -64,9 +69,12 @@ const columns: GridColDef[] = [
     }
   ];
 
-export default function StandingsTable(props: {points_data: TeamStanding[] | null}) {
-    let {points_data} = props
-  if(!points_data){
+export default function StandingsTable() {
+  
+  const teams_data = useSelector(selectTable)
+  const team_load_status = useSelector(selectTableLoadStatus)
+
+  if(team_load_status == "loading"){
     return (
       <Box>
         <p>Loading...</p>      
@@ -77,7 +85,7 @@ export default function StandingsTable(props: {points_data: TeamStanding[] | nul
     return (
         <Box>
             <DataGrid
-            rows={points_data}
+            rows={teams_data}
             getRowId={row => row.team_id}
             columns={columns}
             initialState={{
@@ -88,7 +96,7 @@ export default function StandingsTable(props: {points_data: TeamStanding[] | nul
                   sortModel: [{ field: 'points', sort: 'desc' }],
                 },
             }}
-            pageSizeOptions={[5, 10]}
+            pageSizeOptions={[20]}
             />
         </Box>
     )

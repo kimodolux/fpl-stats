@@ -1,38 +1,62 @@
 "use client"
 
-import Link from 'next/link'
 import {Box} from '../../lib/mui-material';
-import {getTeamById} from "../../../utils/lookup"
 import { useEffect, useState } from 'react';
 import { Player } from '../../../types/Player';
 import { Team } from '../../../types/Team';
 import PlayerTable from '@/components/tables/PlayerTable';
+
+import {
+  useSelector,
+  useDispatch,
+  selectTeams,
+  selectTeamsLoadStatus,
+  selectPlayers,
+  selectPlayersLoadStatus,
+  fetchTeamsAsync,
+  fetchPlayersAsync
+} from '@/lib/redux'
   
   export default function Page({ params }: { params: { team_id: string } }) {
+    const dispatch = useDispatch()
+  
+    useEffect(() => {
+        dispatch(fetchTeamsAsync())
+        dispatch(fetchPlayersAsync())
+    }, [])
     let {team_id} = params
 
-    const [team_data, setTeamData] = useState<Team | null>(null)
-    const [player_data, setPlayerData] = useState<Player[] | null>(null)
+    const teams_data = useSelector(selectTeams)
+    const team_load_status = useSelector(selectTeamsLoadStatus)
+
+    const players_data = useSelector(selectPlayers)
+    const players_load_status = useSelector(selectPlayersLoadStatus)
+
+    const [team_data, setTeamData] = useState<Team | undefined>(undefined)
+    const [player_data, setPlayerData] = useState<Player[] | undefined>(undefined)
 
     useEffect(() => {
-      fetch(`/teams/${team_id}/team-api`).then((res) => res.json())
-      .then((returned_data) => {
-        setTeamData(returned_data.data[0][0])
-      })
-      fetch(`/teams/${team_id}/players-api`).then((res) => res.json())
-      .then((returned_data) => {
-        setPlayerData(returned_data.data[0])
-      })
-    }, [])
+      let team = teams_data.find((t: Team) => (t.id == +team_id))
+      setTeamData(team)
+      
+      let teams_players = players_data.filter((p: Player) => (p.team == +team_id))
+      setPlayerData(teams_players)
+    }, [teams_data, players_data])
 
-    if(!team_data || !player_data){
+    if(team_load_status == "loading" || players_load_status == "loading"){
         return (
           <Box>
             <p>Loading...</p>      
           </Box>
         )
     }
-    console.log(team_data)
+
+    if(!team_data || !player_data){
+      return (
+        <h3>An error has occured, please reload</h3>
+      )
+    }
+
     return (
       <main className="flex min-h-screen flex-col items-center justify-between">
         <div>
