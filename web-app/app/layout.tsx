@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import { Providers } from '../lib/providers'
 import { Inter } from 'next/font/google'
 import Navbar  from "../components/Navbar"
-import DataFetch from "../components/DataFetch"
+import ReduxFetch from "../components/ReduxFetch"
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <Providers>
-      <DataFetch>
+      <ReduxFetch>
         <html lang="en">
           <body className={inter.className}>
             <section>
@@ -29,7 +29,7 @@ export default function RootLayout({
             </section>
           </body>
         </html>
-      </DataFetch>
+      </ReduxFetch>
     </Providers>
   )
 }

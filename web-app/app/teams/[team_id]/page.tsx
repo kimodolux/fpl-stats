@@ -43,14 +43,14 @@ import {
       setPlayerData(teams_players)
     }, [teams_data, players_data])
 
-    if(team_load_status == "loading" || players_load_status == "loading"){
-        return (
-          <Box>
+    if(!team_data || !player_data){
+      if(team_load_status == "loading" || players_load_status == "loading"){
+        <Box>
             <p>Loading...</p>      
           </Box>
-        )
+      }
     }
-
+    
     if(!team_data || !player_data){
       return (
         <h3>An error has occured, please reload</h3>
@@ -64,11 +64,11 @@ import {
           <h3>Team Stats</h3>
             <h4>Position: {team_data.position}</h4>
             <h4>Points : {team_data.points}</h4>
-            <h4>Goals : {team_data.goals}</h4>
+            {/* <h4>Goals : {team_data.goals}</h4>
             <h4>Asissts : {team_data.assists}</h4>
             <h4>xG : {team_data.goals}</h4>
             <h4>xA : {team_data.goals}</h4>
-            <h4>xGC : {team_data.goals}</h4>
+            <h4>xGC : {team_data.goals}</h4> */}
             <h3>Fixtures</h3>
             
             <h3>Results</h3>
