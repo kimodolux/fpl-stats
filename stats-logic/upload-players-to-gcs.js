@@ -26,7 +26,7 @@ async function fetchURL(url){
     });
 }
 
-async function uploadPlayers() {
+async function writePlayersToFile() {
     const bootstrap_res = await fetch(`https://fantasy.premierleague.com/api/bootstrap-static/`, {
         headers: {
             'Content-Type': 'application/json',
@@ -37,6 +37,7 @@ async function uploadPlayers() {
     const players_array = bootstrap_data.elements
 
     let players_ndJson = players_array.map(JSON.stringify).join('\n');
+    
     fs.writeFile("temp/players.json", players_ndJson, function(err) {
       if (err) {
           console.log(err);
@@ -47,56 +48,67 @@ async function uploadPlayers() {
     });
 
   // Upload the file to the specified bucket
-  await storage.bucket(bucketName).upload("temp/players.json", {
-    destination: "players.json",
-  });
+
 
   console.log(`File 'players.json' uploaded successfully.`);
 
-    let gameweek_data = Array(38)
     if(players_array){
-      await players_array.forEach(async player => {
-            // const res = await fetch(`https://fantasy.premierleague.com/api/element-summary/${player.id}/`, {
-            //     headers: {
-            //       'Content-Type': 'application/json',
-            //     },
-            //   })
-            const data = await fetchURL(`https://fantasy.premierleague.com/api/element-summary/${player.id}/`)
+      await players_array.sort((a,b) => {return a.element - b.element}).forEach(async player => {
+        // do it in batches to avoid issues
+        if(player.id >= 100 && player.id < 111){
+            const data = await fetchURL(`https://fantasy.premierleague.com/api/element-summary/${player.id}`)
+            let players_history_ndJson = data.history.map(JSON.stringify).join('\n');
+            if(players_history_ndJson){
+              fs.writeFile(`temp/players/player-${player.id}-history.json`, players_history_ndJson, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+              });
+            }
+            else{
+              console.log(`${player.id} - error with file for history`)
+            }
+
+            let players_fixture_ndJson = data.fixtures.map(JSON.stringify).join('\n');
+            if(players_fixture_ndJson){
+              fs.writeFile(`temp/players/player-${player.id}-fixtures.json`, players_fixture_ndJson, function(err) {
+                if (err) {
+                    console.log(err);
+                }
+              });
+            }
+            else{
+              console.log(`${player.id} - error with file for fixture`)
+            }
             
-            // let data = await res.json()
-            let player_history = data.history
-            player_history.forEach(async gameweek => {
-              // push the gameweek data into an array
-              // the array is 0 indexed while the data is 1 indexed, requiring a subtraction of 1
-              gameweek_data[gameweek.round-1] = {
-                player_id: player.id,
-                ...gameweek
-              }
-            })
-            // await new Promise(r => setTimeout(r, 1000));
+            console.log(`Player ${player.id}`)
+            await new Promise(r => setTimeout(r, 500));
+          }
         })
-    }
-
-    gameweek_data.forEach(async (gameweek, index) => {
-      let players_gameweek_ndJson = gameweek.map(JSON.stringify).join('\n');
-      // name the gameweeks starting at 1, needing a addition of 1 to the index
-      fs.writeFile(`gameweek-${index+1}.json`, players_gameweek_ndJson, function(err) {
-        if (err) {
-            console.log(err);
-        }
-        else{
-          console.log("File written successfully\n");
-        }
-      });
-
-      // Upload the file to the specified bucket
-      await storage.bucket(bucketName).upload(`gameweek-${index+1}.json`, {
-        destination: `gameweek-${index+1}.json`,
-      });
-
-      console.log(`File gameweek-${index+1}.json uploaded successfully.`);
-      })
+    }     
 }
+
+async function uploadPlayers() {
+  for(let i = 1; i <= 774; i++){
+    // no records for
+    if(i != 612){
+    // Upload the file to the specified bucket
+    await storage.bucket(bucketName).upload(`temp/players/player-${i}-fixtures.json`, {
+      destination: `players/player-${i}-fixtures.json`,
+    });
+    // Upload the file to the specified bucket
+    await storage.bucket(bucketName).upload(`temp/players/player-${i}-history.json`, {
+      destination: `players/player-${i}-history.json`,
+    });
+    console.log(`Files for player ${i} uploaded successfully.`);
+    }
+  }
+}
+
+// writePlayersToFile()
+//   .catch((err) => {
+//     console.error('Error writing file:', err);
+//   });
 
 uploadPlayers()
   .catch((err) => {
