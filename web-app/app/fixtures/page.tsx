@@ -40,6 +40,10 @@ export default function Page() {
     return (
       <>
         <h1>Fixtures</h1>
+        <h4>To be decided games</h4>
+        {fixtures.filter((f: Fixture) => !f.event).map((f: Fixture) => {
+          return <p key={f.id}>{getTeamById(f.team_h)} vs. {getTeamById(f.team_a)}</p>
+        })}
         {gameweeks.map(gw => {
           return (
             <Box>
@@ -49,7 +53,7 @@ export default function Page() {
                     <p key={f.id}>{getTeamById(f.team_h)} vs. {getTeamById(f.team_a)}</p>
                   )
               })}
-            </Box>
+            </Box>  
           )
         })}
       </>

@@ -5,7 +5,7 @@ import Link from "next/link"
 import {AppBar, Box, Toolbar, IconButton, Typography, Menu, MenuItem, Tooltip, Button, Container, Avatar} from "../app/lib/mui-material";
 import {MenuIcon, AdbIcon} from '../app/lib/mui-icons';
 
-const pages = ['Players', 'Teams', 'Managers', "Transfers"];
+const pages = ['Players', 'Teams', 'Managers', "Transfers", "Fixtures"];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {

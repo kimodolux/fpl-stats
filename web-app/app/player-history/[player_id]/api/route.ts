@@ -4,11 +4,12 @@ import { NextResponse } from "next/server";
 const keyFilename = './gcs-creds/credentials.json';
 const bigquery = new BigQuery({keyFilename});
 
-  async function query() {
+  async function query(player_id: string) {
 
     const query = `SELECT *
-      FROM \`fpl-stats-6e68c.fpl_stats_2_asia_se1.team-1\`
-      LIMIT 20`;
+      FROM \`fpl-stats-6e68c.fpl_stats_2_asia_se1.player-history-1\`
+      WHERE element = ${player_id}
+    `;
 
     // For all options, see https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
     const options = {
@@ -22,13 +23,19 @@ const bigquery = new BigQuery({keyFilename});
 
     // Wait for the query to finish
     const rows = await job.getQueryResults();
+
     return rows
   }
  
-export async function GET(
-  req: Request,
-) {
-  let data = await query();
-  return NextResponse.json({ data } )
+  export async function GET(
+    req: Request,
+    { params }: { params: { player_id: string } }
+  ) {
+  let data = await query(params.player_id);
+  try{
+    return NextResponse.json({ data } )
+  }
+  finally{
+  }
 }
 

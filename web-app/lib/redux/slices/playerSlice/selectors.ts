@@ -7,7 +7,7 @@ import type { ReduxState } from '@/lib/redux'
 export const selectPlayers = (state: ReduxState) => state.player.players
 export const selectPlayersLoadStatus = (state: ReduxState) => state.player.status
 export const selectPlayersLoaded = (state: ReduxState) => state.player.players_loaded
-export const selectGLKPlayers = (state: ReduxState) => state.player.glk_count
+export const selectGLKPlayers = (state: ReduxState) => state.player.gk_count
 export const selectDEFPlayers = (state: ReduxState) => state.player.def_count
 export const selectMIDPlayers = (state: ReduxState) => state.player.mid_count
 export const selectFWDPlayers = (state: ReduxState) => state.player.fwd_count

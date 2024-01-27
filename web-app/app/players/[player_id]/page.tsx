@@ -1,38 +1,87 @@
 "use client"
 
-import {Box} from '../../lib/mui-material';
+import {Box, Tabs, Tab, Typography} from '@/app/lib/mui-material';
 import { useEffect, useState } from 'react';
-import { Player } from '../../../types/Player';
-import { Fixture } from '../../../types/Fixture';
-import { Gameweek } from '../../../types/Gameweek';
-import {getPositionByType, getTeamById} from "../../../utils/lookup"
+import { Player } from '@/types/Player';
+import { Fixture } from '@/types/Fixture';
+import { PlayerHistory } from '@/types/PlayerHistory';
+import { HistoryFixtureTabs } from '@/components/HistoryFixtureTabs';
+import {getPositionByType, getTeamById} from "@/utils/lookup"
+
+import {
+  useSelector,
+  useDispatch,
+  selectPlayers,
+  selectPlayersLoadStatus,
+  selectFWDPlayers,
+  selectMIDPlayers,
+  selectDEFPlayers,
+  selectGLKPlayers,
+  selectPlayerHistory,
+  selectPlayerHistoryLoadStatus,
+  selectFixtures,
+  selectFixturesLoadStatus,
+  fetchPlayerHistoryAsync
+} from '@/lib/redux'
+
     
 export default function Page({ params }: { params: { player_id: string } }) {
-    const [playerData, setPlayerData] = useState<Player | null>(null)
-    const [fixtureData, setFixtureData] = useState<Fixture[] | null>(null)
-    const [gameweekData, seteventData] = useState<Gameweek[] | null>(null)
-
+    const dispatch = useDispatch()
     useEffect(() => {
-      fetch('/players/api').then((res) => res.json())
-      .then((returned_data) => {
-        let players_data = returned_data.data[0]
-        let player = players_data.find((p: Player) => p.id = +params.player_id)
-        setPlayerData(player)
-      })
+      dispatch(fetchPlayerHistoryAsync(+player_id))
     }, [])
+    let {player_id} = params
+
+    const players_data= useSelector(selectPlayers)
+    const players_status = useSelector(selectPlayersLoadStatus)
+    const forward_count= useSelector(selectFWDPlayers)
+    const midfielder_count= useSelector(selectMIDPlayers)
+    const defender_count= useSelector(selectDEFPlayers)
+    const goalkeeper_count= useSelector(selectGLKPlayers)
+    const player_history_data = useSelector((state) => selectPlayerHistory(state, +player_id))
+    const players_history_status = useSelector(selectPlayerHistoryLoadStatus)
+    const fixtures_data= useSelector(selectFixtures)
+    const fixtures_status = useSelector(selectFixturesLoadStatus)
+
+    // const [playerData, setPlayerData] = useState<Player | undefined>(undefined)
+    // const [fixtureData, setFixtureData] = useState<Fixture[] | undefined>(undefined)
       
-    if(!playerData){
+    if(!players_data || !player_history_data  || !fixtures_data){
       return (
         <Box>
           <p>Loading...</p>      
         </Box>
       )
     }
+    let player_data = players_data.find((p: Player) => (p.id == +player_id))
+
+    if(!player_data){
+      return (
+        <Box>
+          <p>Error occured, please reload</p>      
+        </Box>
+      )
+    }
+
+    let getPositionCount = (element_type: number) => {
+      switch(element_type){
+        case 1:
+          return goalkeeper_count
+        case 2: 
+          return defender_count
+        case 3:
+          return midfielder_count
+        case 4:
+          return forward_count
+        default:
+          return 0
+      }
+    }
 
     const { 
       now_cost, now_cost_rank, selected_by_percent, selected_rank, points_per_game,
       points_per_game_rank, form, form_rank, total_points, bonus, web_name, element_type, team 
-    } = playerData
+    } = player_data
     return (
       <main>
         <div>
@@ -43,22 +92,22 @@ export default function Page({ params }: { params: { player_id: string } }) {
             <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
                 <h4 style={{margin: 0}}>Price</h4>
                 <h2 style={{margin: 0}}>£{now_cost/10}</h2>
-                <p style={{margin: 0}}><b>{now_cost_rank}</b> of 100</p>
+                <p style={{margin: 0}}><b>{now_cost_rank}</b> of {getPositionCount(element_type)}</p>
               </Box>
               <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
                 <h4 style={{margin: 0}}>Selected</h4>
                 <h2 style={{margin: 0}}>{selected_by_percent}%</h2>
-                <p style={{margin: 0}}><b>{selected_rank}</b> out of 100</p>
+                <p style={{margin: 0}}><b>{selected_rank}</b> out of {getPositionCount(element_type)}</p>
               </Box>
               <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
                 <h4 style={{margin: 0}}>Points per Match</h4>
                 <h2 style={{margin: 0}}>{points_per_game}</h2>
-                <p style={{margin: 0}}><b>{points_per_game_rank}</b> of 100</p>
+                <p style={{margin: 0}}><b>{points_per_game_rank}</b> of {getPositionCount(element_type)}</p>
               </Box>
               <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
                 <h4 style={{margin: 0}}>Form</h4>
                 <h2 style={{margin: 0}}>{form}</h2>
-                <p style={{margin: 0}}><b>{form_rank}</b> of 100</p>
+                <p style={{margin: 0}}><b>{form_rank}</b> of {getPositionCount(element_type)}</p>
               </Box>
               <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
                 <h4 style={{margin: 0}}>Total Pts</h4>
@@ -81,38 +130,7 @@ export default function Page({ params }: { params: { player_id: string } }) {
           
           
           <h2>This Season</h2>
-          <h3>Fixtures</h3>
-          {/* {data.fixtures.map((fixture: any, index: number) => {
-            if(index <= 1){
-              return (
-                <div key={fixture.id}>
-                  <p>Id: {fixture.id}</p>
-                  <p>Home Team: {fixture.team_h}</p>
-                  <p>Away Team: {fixture.team_a}</p>
-                  <p>Score: {fixture.team_h_score}:{fixture.team_a_score}</p>
-                  <p>Kickoff time: {fixture.teamkickoff_time_h_score}</p>
-                  <br/>
-                </div>
-              )
-            }
-          })}
-          
-          <h3>History</h3>
-          {data.history_past.map((player_details: any, index: number) => {
-            if(index <= 1){
-              return (
-                <div key={player_details.season_name}>
-                  <p>Season: {player_details.season_name}</p>
-                  <p>Total Points: {player_details.total_points}</p>
-                  <p>Goals: {player_details.goals_scored}</p>
-                  <p>Assists: {player_details.assists}</p>
-                  <p>xG: {player_details.expected_goals}</p>
-                  <p>xA: {player_details.expected_assists}</p>
-                  <br />
-                </div>
-              )
-            }
-          })} */}
+            <HistoryFixtureTabs history={player_history_data} fixtures={fixtures_data}/>
         </div>
       </main>
     )

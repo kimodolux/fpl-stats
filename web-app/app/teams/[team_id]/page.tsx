@@ -21,7 +21,6 @@ import {
     const dispatch = useDispatch()
   
     useEffect(() => {
-        dispatch(fetchTeamsAsync())
         dispatch(fetchPlayersAsync())
     }, [])
     let {team_id} = params

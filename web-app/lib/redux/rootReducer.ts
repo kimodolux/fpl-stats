@@ -1,5 +1,5 @@
 /* Instruments */
-import { counterSlice, playerSlice, teamSlice, tableSlice, fixtureSlice, dataSlice } from './slices'
+import { counterSlice, playerSlice, teamSlice, tableSlice, fixtureSlice, dataSlice, playerHistorySlice } from './slices'
 
 export const reducer = {
   counter: counterSlice.reducer,
@@ -8,4 +8,5 @@ export const reducer = {
   table: tableSlice.reducer,
   fixture: fixtureSlice.reducer,
   data: dataSlice.reducer,
+  playerHistory: playerHistorySlice.reducer
 }

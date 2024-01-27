@@ -8,7 +8,6 @@ export const fetchFixtures = async (): Promise<Fixture[]> => {
   if(response){
     try {
       const result = await response.json()
-      console.log(result)
       return result.data[0]
   } catch (e) {
       console.log(e);
