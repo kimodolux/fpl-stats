@@ -41,14 +41,15 @@ interface TabPanelProps {
   }
 
   
-export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: Fixture[]}) {
-        let {history, fixtures} = props
+export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: Fixture[], player_team: number}) {
+        let {history, fixtures, player_team} = props
         const [value, setValue] = useState(0);
         let sorted_history = [...history].sort((a,b) => b.round-a.round)
+        let sorted_fixtures = [...fixtures].sort((a,b) => b.event-a.event)
         const handleChange = (event: React.SyntheticEvent, newValue: number) => {
             setValue(newValue);
         };
-  
+        console.log(sorted_fixtures)
     return (
       <Box sx={{ width: '100%' }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -99,7 +100,33 @@ export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: F
           </TableContainer>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          Fixtures
+        <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Date</TableCell>
+                  <TableCell align="right">GW</TableCell>
+                  <TableCell align="right">Opponent</TableCell>
+                  <TableCell align="right">Difficulty</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sorted_fixtures.map((f) => (
+                  <TableRow
+                    key={f.event}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      { f.kickoff_time ? f.kickoff_time.value.slice(0, 10) : "TBD"}
+                    </TableCell>
+                    <TableCell align="right">{f.event}</TableCell>
+                    <TableCell align="right">{f.team_h == player_team ? getTeamById(f.team_a) : getTeamById(f.team_h)}</TableCell>
+                    <TableCell align="right">{f.team_h == player_team ? f.team_a_difficulty : f.team_h_difficulty}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </CustomTabPanel>
       </Box>
     );

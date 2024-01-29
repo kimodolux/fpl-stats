@@ -6,7 +6,7 @@ export type Fixture = {
     minutes: number
     provisional_start_time: boolean
     team_h_difficulty: number
-    kickoff_time: Date
+    kickoff_time: {value: string}
     id: number
     started: boolean
     code: number

@@ -53,6 +53,7 @@ export default function Page({ params }: { params: { player_id: string } }) {
         </Box>
       )
     }
+
     let player_data = players_data.find((p: Player) => (p.id == +player_id))
 
     if(!player_data){
@@ -62,6 +63,8 @@ export default function Page({ params }: { params: { player_id: string } }) {
         </Box>
       )
     }
+
+    
 
     let getPositionCount = (element_type: number) => {
       switch(element_type){
@@ -80,12 +83,17 @@ export default function Page({ params }: { params: { player_id: string } }) {
 
     const { 
       now_cost, now_cost_rank, selected_by_percent, selected_rank, points_per_game,
-      points_per_game_rank, form, form_rank, total_points, bonus, web_name, element_type, team 
+      points_per_game_rank, form, form_rank, total_points, bonus, web_name, element_type, team,
+      first_name, second_name 
     } = player_data
+
+    let future_fixtures = [...fixtures_data].filter((f: Fixture) => (f.team_h == team || f.team_a == team) && f.finished == false).sort((a,b) => a.event-b.event)
+    let player_history = [...player_history_data].sort((a,b) => b.round-a.round)
+
     return (
       <main>
         <div>
-          <h2>{web_name}</h2>
+          <h2>{first_name} {second_name}</h2>
           <h3>{getPositionByType(element_type)}</h3>
           <h4>{getTeamById(team)}</h4>
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around",  p: 1,m: 1, marginLeft: "20%", marginRight: "20%", border: 1, borderColor: "#808080", borderRadius: 1}}>
@@ -118,19 +126,57 @@ export default function Page({ params }: { params: { player_id: string } }) {
                 <h2 style={{margin: 0}}>{bonus}</h2>
               </Box>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-evenly",  p: 1,m: 1}}>
-            <Box>
+          <Box sx={{ display: 'flex', flexDirection: 'row',  p: 1,m: 1, flexGrow: 1 }}>
+            <Box sx={{ maxWidth: "50%"}}>
               <h2>Next 3</h2>
+              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around" }}>
+                {future_fixtures.filter((ff: Fixture) => ff.event).map((ff: Fixture, index: number) => {
+                  if(index < 3){
+                    return (
+                      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", border: 1, borderColor: "#808080", borderRadius: 1}}>
+                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                          GW{ff.event}
+                        </Box>
+                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                          {ff.team_h == team ? getTeamById(ff.team_a) : getTeamById(ff.team_h)}
+                        </Box>
+                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                          {ff.team_h == team ? ff.team_a_difficulty : ff.team_h_difficulty}
+                        </Box>
+                      </Box>
+                      )
+                  }
+                })}
+              </Box>    
             </Box>
-            <Box>
-              <h2>Last 3</h2>
+            <Box sx={{ maxWidth: "50%"}}>
+              <h2>Form</h2>
+              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around" }}>
+                {player_history.map((ph: PlayerHistory, index: number) => {
+                  if(index < 3){
+                    return (
+                      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", border: 1, borderColor: "#808080", borderRadius: 1}}>
+                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                          GW{ph.round}
+                        </Box>
+                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                          {getTeamById(ph.opponent_team)}
+                        </Box>
+                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                          {ph.total_points}
+                        </Box>
+                      </Box>
+                      )
+                  }
+                })}
+              </Box>    
             </Box>
             
           </Box>
           
           
           <h2>This Season</h2>
-            <HistoryFixtureTabs history={player_history_data} fixtures={fixtures_data}/>
+            <HistoryFixtureTabs history={player_history_data} fixtures={future_fixtures} player_team={team}/>
         </div>
       </main>
     )
