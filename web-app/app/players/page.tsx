@@ -5,6 +5,7 @@ import {Box} from '../lib/mui-material';
 import { Player } from '../../types/Player';
 import { getTeamById } from '@/utils/lookup';
 import PlayerTable from '@/components/tables/PlayerTable';
+import {AllPlayerColumns} from "@/components/tables/columns/AllPlayerColumns"
 
 import {
   useSelector,
@@ -15,7 +16,7 @@ import {
   // TODO: add server side pagination
   
 export default function Page() {
-  const [data, setData] = useState<Player[] | null>(null)
+  const [tableData, setTableData] = useState<Player[] | undefined>(undefined)
 
   const players_data = useSelector(selectPlayers)
   const players_load_status = useSelector(selectPlayersLoadStatus)
@@ -24,7 +25,7 @@ export default function Page() {
       let player_data = [...players_data].map((player: Player) => {
        return {...player, team_name: getTeamById(player.team), now_cost: player.now_cost / 10}
       })
-      setData(player_data)
+      setTableData(player_data)
   }, [players_data])
     
   if(players_load_status == "loading"){
@@ -36,7 +37,7 @@ export default function Page() {
   }
 
     return (
-      <PlayerTable player_data={data}/>
+      <PlayerTable player_data={tableData} column_data={AllPlayerColumns}/>
     )
   }
 

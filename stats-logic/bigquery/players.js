@@ -7,10 +7,10 @@ const storage = new Storage({ keyFilename });
 
 const bucketName = 'fpl-sts-bucket-1';
 
-async function loadCSVFromGCSToBQ(player_id, file_type) {
-    const filename = `players/player-${player_id}-${file_type}.json`;
+async function loadCSVFromGCSToBQ(player_id) {
+    const filename = `players/player-${player_id}-history.json`;
     const datasetId = 'fpl_stats_2_asia_se1';
-    const tableId = `player-${file_type}-1`;
+    const tableId = `player-history-1`;
   
     const metadata = {
       sourceFormat: 'NEWLINE_DELIMITED_JSON',
@@ -35,26 +35,25 @@ async function loadCSVFromGCSToBQ(player_id, file_type) {
     }
   }
 
-  async function recrusiveRetry(player_id, file_type, retries=0){
+  async function recrusiveRetry(player_id, retries=0){
     try{
-      return await loadCSVFromGCSToBQ(player_id, file_type)
+      return await loadCSVFromGCSToBQ(player_id)
     }
     catch(err){
       console.error(`Error loading player ${player_id}, waiting ${Math.pow(2, retries)} seconds before retry:`, err);
       await new Promise(r => setTimeout(r, Math.pow(2, retries) * 1000));
-      await recrusiveRetry(player_id, file_type, retries + 1)
+      await recrusiveRetry(player_id, retries + 1)
     }
   }
   
-  async function loadPlayersIntoBQ(file_type){
+  async function loadPlayersIntoBQ(){
     for(let i = 1; i <= 774; i++){
       if(i!=612){
-        await recrusiveRetry(i, file_type)
-        console.log(`Transfered ${file_type} player id: ${i}`)
+        await recrusiveRetry(i)
+        console.log(`Transfered player id: ${i}`)
         await new Promise(r => setTimeout(r, 1000));
       }
     }
-    // await recrusiveRetry(1)
   }
    
-  await loadPlayersIntoBQ("history")
+  await loadPlayersIntoBQ()

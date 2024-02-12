@@ -3,7 +3,7 @@ import { Player } from "@/types/Player"
 export const fetchPlayers = async (): Promise<Player[]> => {
   const response = await fetch('http://localhost:3000/players/api', {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' }
   })
   if(response){
     try {

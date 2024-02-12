@@ -126,54 +126,56 @@ export default function Page({ params }: { params: { player_id: string } }) {
                 <h2 style={{margin: 0}}>{bonus}</h2>
               </Box>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row',  p: 1,m: 1, flexGrow: 1 }}>
-            <Box sx={{ maxWidth: "50%"}}>
-              <h2>Next 3</h2>
-              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around" }}>
-                {future_fixtures.filter((ff: Fixture) => ff.event).map((ff: Fixture, index: number) => {
-                  if(index < 3){
-                    return (
-                      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", border: 1, borderColor: "#808080", borderRadius: 1}}>
-                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
-                          GW{ff.event}
+            <Box sx={{ display: 'flex', flexDirection: 'row', p: 1,m: 1, justifyContent:'space-around', alignItems:'center', flexGrow: 1 }}>
+              <Box sx={{ maxWidth: "50%"}}>
+                <Box sx={{ display: 'flex', justifyContent:'center', alignItems:'center'}}>
+                  <h2>Next 3</h2>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around" }}>
+                  {future_fixtures.filter((ff: Fixture) => ff.event).map((ff: Fixture, index: number) => {
+                    if(index < 3){
+                      return (
+                        <Box key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", border: 1, borderColor: "#808080", borderRadius: 1}}>
+                          <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                            GW{ff.event}
+                          </Box>
+                          <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                            {ff.team_h == team ? getTeamById(ff.team_a) : getTeamById(ff.team_h)}
+                          </Box>
+                          <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                            {ff.team_h == team ? ff.team_a_difficulty : ff.team_h_difficulty}
+                          </Box>
                         </Box>
-                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
-                          {ff.team_h == team ? getTeamById(ff.team_a) : getTeamById(ff.team_h)}
-                        </Box>
-                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
-                          {ff.team_h == team ? ff.team_a_difficulty : ff.team_h_difficulty}
-                        </Box>
-                      </Box>
-                      )
-                  }
-                })}
-              </Box>    
-            </Box>
-            <Box sx={{ maxWidth: "50%"}}>
-              <h2>Form</h2>
-              <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around" }}>
-                {player_history.map((ph: PlayerHistory, index: number) => {
-                  if(index < 3){
-                    return (
-                      <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", border: 1, borderColor: "#808080", borderRadius: 1}}>
-                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
-                          GW{ph.round}
-                        </Box>
-                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
-                          {getTeamById(ph.opponent_team)}
-                        </Box>
-                        <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
-                          {ph.total_points}
-                        </Box>
-                      </Box>
-                      )
-                  }
-                })}
-              </Box>    
-            </Box>
-            
-          </Box>
-          
+                        )
+                    }
+                  })}
+                </Box>    
+              </Box>
+              <Box sx={{ maxWidth: "50%"}}>
+                <Box sx={{ display: 'flex', justifyContent:'center', alignItems:'center'}}>
+                    <h2>Form</h2>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around" }}>
+                    {player_history.map((ph: PlayerHistory, index: number) => {
+                      if(index < 3){
+                        return (
+                          <Box key={index} sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around", border: 1, borderColor: "#808080", borderRadius: 1}}>
+                            <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                              GW{ph.round}
+                            </Box>
+                            <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                              {getTeamById(ph.opponent_team)}
+                            </Box>
+                            <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>
+                              {ph.total_points}
+                            </Box>
+                          </Box>
+                          )
+                      }
+                    })}
+                  </Box>    
+                </Box>
+              </Box>
           
           <h2>This Season</h2>
             <HistoryFixtureTabs history={player_history_data} fixtures={future_fixtures} player_team={team}/>

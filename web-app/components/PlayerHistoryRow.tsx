@@ -11,7 +11,7 @@ export function PlayerHistoryRow(props: {history: PlayerHistory}) {
                 {history.round}
             </Box>
             <Box sx={{ p: 1,m: 1 }}>
-                {history.opponent_team}
+                {getTeamById(history.opponent_team)}
             </Box>
             <Box sx={{ p: 1,m: 1 }}>
                 {history.total_points}

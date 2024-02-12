@@ -2,11 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import {Box} from '../lib/mui-material';
-import { Player } from '@/types/Player';
 import { Fixture } from "@/types/Fixture"
 import { getTeamById } from '@/utils/lookup';
-import PlayerTable from '@/components/tables/PlayerTable';
-import {  } from "@/types/Fixture"
 
 import {
   useSelector,
@@ -46,7 +43,7 @@ export default function Page() {
         })}
         {gameweeks.map(gw => {
           return (
-            <Box>
+            <Box key={gw}>
               <h4>Gameweek {gw}</h4>
               {fixtures.filter((f: Fixture) => f.event == gw).map((f: Fixture) => {
                   return (

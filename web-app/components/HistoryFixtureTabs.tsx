@@ -1,11 +1,8 @@
 import {Box, Tabs, Tab, Typography, TableContainer, TableHead, Table, TableCell, TableRow, TableBody, Paper} from '@/app/lib/mui-material'
-import { useEffect, useState } from 'react';
-import { Player } from '../types/Player';
+import { useState } from 'react';
 import { Fixture } from '../types/Fixture';
 import { PlayerHistory } from '../types/PlayerHistory';
-import {getPositionByType, getTeamById} from "../utils/lookup"
-import { PlayerHistoryRow } from './PlayerHistoryRow';
-import { PlayerHistorySchemaRow } from './PlayerHistorySchemaRow';
+import {getTeamById} from "../utils/lookup"
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -84,7 +81,7 @@ export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: F
                     <TableCell component="th" scope="row">
                       {h.round}
                     </TableCell>
-                    <TableCell align="right">{h.opponent_team}</TableCell>
+                    <TableCell align="right">{getTeamById(h.opponent_team)}</TableCell>
                     <TableCell align="right">{h.total_points}</TableCell>
                     <TableCell align="right">{h.starts}</TableCell>
                     <TableCell align="right">{h.minutes}</TableCell>

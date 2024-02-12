@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@types/redux-logger": "^3.0.12",
+    "encoding": "^0.1.13",
     "redux-logger": "^3.0.6"
   }
 }
