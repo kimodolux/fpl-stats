@@ -29,12 +29,12 @@ function ResponsiveAppBar({
   const fetchReduxData = () =>{
     // fetch to init data or fetch every hour otherwise
     if(!last_data_fetch_date || last_data_fetch_date < (Date.now() - one_hour)){
-      dispatch(fetchTeamsAsync())
-      dispatch(fetchPlayersAsync())
-      dispatch(fetchPlayersCountAsync())
-      dispatch(fetchTableAsync())
-      dispatch(fetchFixturesAsync())
-      dispatch(dataSlice.actions.setLastDataFetch())
+      // dispatch(fetchTeamsAsync())
+      // dispatch(fetchPlayersAsync())
+      // dispatch(fetchPlayersCountAsync())
+      // dispatch(fetchTableAsync())
+      // dispatch(fetchFixturesAsync())
+      // dispatch(dataSlice.actions.setLastDataFetch())
     }
   }
 

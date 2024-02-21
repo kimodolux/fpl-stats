@@ -1,4 +1,4 @@
-type PlayerPick = {
+export type PlayerPick = {
     element: number,
     is_captain: boolean,
     is_vice_captain: boolean,
@@ -6,7 +6,7 @@ type PlayerPick = {
     position: number
 }
 
-type PickStats = {
+export type PickStats = {
     bank: number,
     event: number,
     event_transfers: number,
