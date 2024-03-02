@@ -6,7 +6,7 @@ import { Player } from '@/types/Player';
 import { Fixture } from '@/types/Fixture';
 import { PlayerHistory } from '@/types/PlayerHistory';
 import { HistoryFixtureTabs } from '@/components/HistoryFixtureTabs';
-import {getPositionByType, getTeamById} from "@/utils/lookup"
+import {getPositionNameByType, getTeamById} from "@/utils/lookup"
 
 import {
   useSelector,
@@ -94,7 +94,7 @@ export default function Page({ params }: { params: { player_id: string } }) {
       <main>
         <div>
           <h2>{first_name} {second_name}</h2>
-          <h3>{getPositionByType(element_type)}</h3>
+          <h3>{getPositionNameByType(element_type)}</h3>
           <h4>{getTeamById(team)}</h4>
           <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: "space-around",  p: 1,m: 1, marginLeft: "20%", marginRight: "20%", border: 1, borderColor: "#808080", borderRadius: 1}}>
             <Box sx={{ p: 1,m: 1, display: 'flex', alignItems: "center", flexDirection: 'column' }}>

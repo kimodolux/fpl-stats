@@ -13,59 +13,59 @@ import {
 const columns: GridColDef[] = [
     {
       field: 'team_name',
-      headerName: 'Team name',
-      width: 150,
+      headerName: 'Club',
+      width: 100,
       renderCell: (params) => (
         <Link href={`/teams/${params.id}`}>{params.value}</Link>
       )
     },
     {
       field: 'played',
-      headerName: 'Played',
+      headerName: 'MP',
       type: 'number',
-      width: 110,
+      width: 50,
     },
     {
       field: 'points',
-      headerName: 'Points',
+      headerName: 'Pts',
       type: 'number',
-      width: 110,
+      width: 50,
     },
     {
       field: 'wins',
-      headerName: 'Wins',
+      headerName: 'W',
       type: 'number',
-      width: 110,
+      width: 50,
     },
     {
       field: 'draws',
-      headerName: 'Draws',
+      headerName: 'D',
       type: 'number',
-      width: 110,
+      width: 50,
     },
     {
       field: 'losses',
-      headerName: 'Losses',
+      headerName: 'L',
       type: 'number',
-      width: 110,
+      width: 50,
     },
     {
       field: 'goal_difference',
-      headerName: 'Goal Difference',
+      headerName: 'DG',
       type: 'number',
-      width: 150,
+      width: 50,
     },
     {
       field: 'goals_for',
-      headerName: 'Goals for',
+      headerName: 'GF',
       type: 'number',
-      width: 150,
+      width: 50,
     },
     {
       field: 'goals_against',
-      headerName: 'Goals against',
+      headerName: 'GC',
       type: 'number',
-      width: 150,
+      width: 50,
     }
   ];
 
@@ -83,7 +83,6 @@ export default function StandingsTable() {
   }
 
     return (
-        <Box>
             <DataGrid
             rows={teams_data}
             getRowId={row => row.team_id}
@@ -98,7 +97,7 @@ export default function StandingsTable() {
             }}
             pageSizeOptions={[20]}
             />
-        </Box>
+
     )
   }
 

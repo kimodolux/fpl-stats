@@ -42,7 +42,7 @@ export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: F
         let {history, fixtures, player_team} = props
         const [value, setValue] = useState(0);
         let sorted_history = [...history].sort((a,b) => b.round-a.round)
-        let sorted_fixtures = [...fixtures].sort((a,b) => b.event-a.event)
+        let sorted_fixtures = [...fixtures].sort((a,b) => a.event-b.event)
         const handleChange = (event: React.SyntheticEvent, newValue: number) => {
             setValue(newValue);
         };
@@ -108,7 +108,7 @@ export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: F
                 </TableRow>
               </TableHead>
               <TableBody>
-                {sorted_fixtures.map((f) => (
+                {sorted_fixtures.filter((f: Fixture) => f.event).map((f: Fixture) => (
                   <TableRow
                     key={f.event}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -118,7 +118,7 @@ export function HistoryFixtureTabs(props: {history: PlayerHistory[], fixtures: F
                     </TableCell>
                     <TableCell align="right">{f.event}</TableCell>
                     <TableCell align="right">{f.team_h == player_team ? getTeamById(f.team_a) : getTeamById(f.team_h)}</TableCell>
-                    <TableCell align="right">{f.team_h == player_team ? f.team_a_difficulty : f.team_h_difficulty}</TableCell>
+                    <TableCell align="right">{f.team_h == player_team ? f.team_h_difficulty : f.team_a_difficulty}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

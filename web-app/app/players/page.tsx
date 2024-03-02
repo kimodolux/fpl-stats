@@ -1,11 +1,11 @@
 "use client"
 
 import { useEffect, useState } from 'react';
-import {Box} from '../lib/mui-material';
-import { Player } from '../../types/Player';
+import {Box} from '@/app/lib/mui-material';
+import { Player } from '@/types/Player';
 import { getTeamById } from '@/utils/lookup';
 import PlayerTable from '@/components/tables/PlayerTable';
-import {AllPlayerColumns} from "@/components/tables/columns/AllPlayerColumns"
+import {AllPlayerColumns} from "@/components/tables/columns/AllPlayerColumns";
 
 import {
   useSelector,
@@ -37,7 +37,7 @@ export default function Page() {
   }
 
     return (
-      <PlayerTable player_data={tableData} column_data={AllPlayerColumns}/>
+      <PlayerTable player_data={tableData} column_data={AllPlayerColumns} sort_by="total_points"/>
     )
   }
 

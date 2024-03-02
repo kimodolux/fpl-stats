@@ -6,8 +6,8 @@ import { Player } from '@/types/Player';
 
   // TODO: add server side pagination
 
-export default function PlayerTable(props: {player_data: Player[] | undefined, column_data: GridColDef[]}) {
-    let {player_data, column_data} = props
+export default function PlayerTable(props: {player_data: Player[] | undefined, column_data: GridColDef[], sort_by?: string}) {
+    let {player_data, column_data, sort_by} = props
     
   if(!player_data){
     return (
@@ -18,22 +18,20 @@ export default function PlayerTable(props: {player_data: Player[] | undefined, c
   }
 
     return (
-        <Box>
             <DataGrid
             rows={player_data}
             getRowId={row => row.id}
             columns={column_data}
             initialState={{
                 pagination: {
-                  paginationModel: { page: 0, pageSize: 20 },
+                  paginationModel: { page: 0, pageSize: 10 },
                   },
                   sorting: {
-                    sortModel: [{ field: 'form', sort: 'desc' }],
+                    sortModel: [{ field: sort_by || 'form', sort: 'desc' }],
                   },
             }}
-            pageSizeOptions={[20]}
+            pageSizeOptions={[10]}
             />
-        </Box>
     )
   }
 

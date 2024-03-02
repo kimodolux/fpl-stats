@@ -1,6 +1,6 @@
 import { BadgeType, TeamBadgeOptions } from "@/types/TeamBadge"
 
-export const getPositionByType = (element_type: number) => {
+export const getPositionNameByType = (element_type: number) => {
     switch(element_type){
         case 1:
             return "Goalkeeper"
@@ -10,6 +10,20 @@ export const getPositionByType = (element_type: number) => {
             return "Midfielder"
         case 4:
             return "Forward"
+
+    }
+}
+
+export const getPositionShortNameByType = (element_type: number) => {
+    switch(element_type){
+        case 1:
+            return "GKP"
+        case 2:
+            return "DEF"
+        case 3:
+            return "MID"
+        case 4:
+            return "FWD"
 
     }
 }
@@ -88,7 +102,7 @@ export const getTeamBadgeById = (team_id: number) => {
         case 5:                        
         return {
             type: BadgeType.Half,
-            primaryColour: "blue",
+            primaryColour: "#0057B8",
             secondaryColour: "white"
         } as TeamBadgeOptions
         case 6:
@@ -100,7 +114,7 @@ export const getTeamBadgeById = (team_id: number) => {
         case 7:
             return {
                 type: BadgeType.Full,
-                primaryColour: "dark blue",
+                primaryColour: "#034694",
                 secondaryColour: undefined
             } as TeamBadgeOptions
         case 8:
