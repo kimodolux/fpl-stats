@@ -1,7 +1,8 @@
 "use client"
 
-import {Box} from '../../app/lib/mui-material';
-import {DataGrid, GridColDef, GridValueGetterParams} from "../../app/lib/mui-data-grid"
+import {Box} from '@/app/lib/mui-material';
+// import { DataGridPremium, GridColDef } from '@/app/lib/mui-data-grid-premium';
+import {DataGrid, GridColDef, GridValueGetterParams} from "@/app/lib/mui-data-grid"
 import Link from 'next/link'
 
 import {
